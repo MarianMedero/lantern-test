@@ -1614,6 +1614,16 @@
               "options__2": {
                 "label": "Miniaturas"
               }
+            },
+            "swatch_icon_display": {
+              "label": "Visualización de la variante",
+              "info": "Los iconos se cargan del metafield de variante custom.swatch_icon cuando está disponible.",
+              "options__1": {
+                "label": "Solo texto"
+              },
+              "options__2": {
+                "label": "Texto e icono"
+              }
             }
           }
         },
@@ -2464,6 +2474,16 @@
               },
               "options__2": {
                 "label": "Botones"
+              }
+            },
+            "swatch_icon_display": {
+              "label": "Visualización de la variante",
+              "info": "Los iconos se cargan del metafield de variante custom.swatch_icon cuando está disponible.",
+              "options__1": {
+                "label": "Solo texto"
+              },
+              "options__2": {
+                "label": "Texto e icono"
               }
             }
           }

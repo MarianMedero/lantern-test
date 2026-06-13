@@ -827,6 +827,16 @@
               "options__2": {
                 "label": "Pills"
               }
+            },
+            "swatch_icon_display": {
+              "label": "Variant pill display",
+              "info": "Icons are loaded from the variant metafield custom.swatch_icon when available.",
+              "options__1": {
+                "label": "Text only"
+              },
+              "options__2": {
+                "label": "Text and icon"
+              }
             }
           }
         },
@@ -1958,6 +1968,16 @@
               },
               "options__2": {
                 "label": "Pills"
+              }
+            },
+            "swatch_icon_display": {
+              "label": "Variant pill display",
+              "info": "Icons are loaded from the variant metafield custom.swatch_icon when available.",
+              "options__1": {
+                "label": "Text only"
+              },
+              "options__2": {
+                "label": "Text and icon"
               }
             }
           }

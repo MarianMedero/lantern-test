@@ -221,13 +221,12 @@ fieldset.product-form__input .form__label {
   box-shadow: var(--variant-pills-shadow-horizontal-offset) var(--variant-pills-shadow-vertical-offset) var(--variant-pills-shadow-blur-radius) rgba(var(--color-shadow), var(--variant-pills-shadow-opacity));
 }
 
-.product-form__input input[type='radio'] + label.variant-picker__label--with-icon {
+.product-form__input input[type='radio'] + label.variant-picker__label--text-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 4.4rem;
-  min-height: 4.4rem;
-  padding: 0.8rem;
+  gap: 0.8rem;
+  padding: 1rem 1.6rem;
 }
 
 .variant-picker__icon {
@@ -247,12 +246,12 @@ fieldset.product-form__input .form__label {
   object-fit: contain;
 }
 
-.product-form__input input[type='radio']:checked + label.variant-picker__label--with-icon .variant-picker__icon-image {
+.product-form__input input[type='radio']:checked + label.variant-picker__label--text-icon .variant-picker__icon-image {
   filter: brightness(0) invert(1);
 }
 
-.product-form__input input[type='radio']:disabled + label.variant-picker__label--with-icon .variant-picker__icon-image,
-.product-form__input input[type='radio'].disabled + label.variant-picker__label--with-icon .variant-picker__icon-image {
+.product-form__input input[type='radio']:disabled + label.variant-picker__label--text-icon .variant-picker__icon-image,
+.product-form__input input[type='radio'].disabled + label.variant-picker__label--text-icon .variant-picker__icon-image {
   opacity: 0.45;
 }
 

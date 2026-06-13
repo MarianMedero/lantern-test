@@ -87,16 +87,14 @@
     >
     <label
       for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
-      class="{% if swatch_icon %}variant-picker__label variant-picker__label--with-icon{% endif %}"
+      class="{%- if block.settings.swatch_icon_display == 'text_icon' and swatch_icon != blank %} variant-picker__label variant-picker__label--text-icon{%- endif -%}"
     >
-      {%- if swatch_icon -%}
+      {%- if block.settings.swatch_icon_display == 'text_icon' and swatch_icon != blank -%}
         <span class="variant-picker__icon" aria-hidden="true">
           {{ swatch_icon | image_url: width: 96 | image_tag: widths: '48, 96', sizes: '24px', loading: 'lazy', class: 'variant-picker__icon-image', alt: '' }}
         </span>
-        <span class="variant-picker__label-text visually-hidden">{{ value }}</span>
-      {%- else -%}
-        <span class="variant-picker__label-text">{{ value }}</span>
       {%- endif -%}
+      <span class="variant-picker__label-text">{{ value }}</span>
       <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
     </label>
   {%- elsif block.settings.picker_type == 'dropdown' -%}
