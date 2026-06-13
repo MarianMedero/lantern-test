@@ -3310,11 +3310,9 @@
         "eyebrow": {
           "label": "Eyebrow"
         },
-        "title": {
-          "label": "Título"
-        },
         "title_highlight": {
-          "label": "Palabra destacada del título"
+          "label": "Palabra destacada del título",
+          "info": "Se muestra después del título del producto. Ejemplo: \"Specs\" se renderiza como \"Nombre del producto Specs\"."
         },
         "description": {
           "label": "Descripción"

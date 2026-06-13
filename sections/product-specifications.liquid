@@ -5,7 +5,7 @@
   assign selected_variant = product.selected_or_first_available_variant
   assign has_visible_blocks = false
 
-  if section.blocks.size > 0
+  unless section.blocks.size == 0
     if request.design_mode
       assign has_visible_blocks = true
     else
@@ -27,7 +27,7 @@
         endif
       endfor
     endif
-  endif
+  endunless
 -%}
 
 {%- if has_visible_blocks -%}
@@ -66,18 +66,14 @@
           </div>
         {%- endif -%}
 
-        {%- if section.settings.title != blank or section.settings.title_highlight != blank -%}
-          <h2 class="product-specifications__title">
-            {%- if section.settings.title != blank -%}
-              {{- section.settings.title | escape -}}
-            {%- endif -%}
-            {%- if section.settings.title_highlight != blank -%}
-              <span class="product-specifications__title-highlight">
-                {{- ' ' | append: section.settings.title_highlight | escape -}}
-              </span>
-            {%- endif -%}
-          </h2>
-        {%- endif -%}
+        <h2 class="product-specifications__title">
+          {{- product.title | escape -}}
+          {%- if section.settings.title_highlight != blank -%}
+            <span class="product-specifications__title-highlight">
+              {{- ' ' | append: section.settings.title_highlight | escape -}}
+            </span>
+          {%- endif -%}
+        </h2>
 
         {%- if section.settings.description != blank -%}
           <p class="product-specifications__description">{{ section.settings.description | escape }}</p>
@@ -276,12 +272,6 @@
       "id": "eyebrow",
       "label": "t:sections.product-specifications.settings.eyebrow.label",
       "default": "What's inside"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "t:sections.product-specifications.settings.title.label",
-      "default": "The Complete Snowboard"
     },
     {
       "type": "text",

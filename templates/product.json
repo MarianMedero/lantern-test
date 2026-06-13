@@ -130,7 +130,6 @@
       ],
       "settings": {
         "eyebrow": "What's inside",
-        "title": "The Complete Snowboard",
         "title_highlight": "Specs",
         "description": "Complete snowboard variants. Pre-tuned, waxed, and ready to ride.",
         "enable_debug_logs": true,
