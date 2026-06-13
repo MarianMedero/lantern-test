@@ -3310,17 +3310,6 @@
         "description": {
           "label": "Description"
         },
-        "header_metafield": {
-          "content": "Metaobject metafield"
-        },
-        "metafield_namespace": {
-          "label": "Namespace",
-          "info": "Product metafield namespace that references the specifications metaobject."
-        },
-        "metafield_key": {
-          "label": "Key",
-          "info": "Product metafield key that references the specifications metaobject."
-        },
         "header_colors": {
           "content": "Colors"
         },
@@ -3332,20 +3321,6 @@
         },
         "card_background_color": {
           "label": "Card background color"
-        }
-      },
-      "blocks": {
-        "spec": {
-          "name": "Specification",
-          "settings": {
-            "label": {
-              "label": "Label"
-            },
-            "field_key": {
-              "label": "Metaobject field key",
-              "info": "Key of the list.single_line_text_field on the metaobject. Must match the field name in your metaobject definition."
-            }
-          }
         }
       },
       "presets": {

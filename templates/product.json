@@ -75,81 +75,11 @@
     },
     "product-specifications": {
       "type": "product-specifications",
-      "blocks": {
-        "board_type": {
-          "type": "spec",
-          "settings": {
-            "label": "Board Type",
-            "field_key": "board_type"
-          }
-        },
-        "length": {
-          "type": "spec",
-          "settings": {
-            "label": "Length",
-            "field_key": "length"
-          }
-        },
-        "flex_rating": {
-          "type": "spec",
-          "settings": {
-            "label": "Flex Rating",
-            "field_key": "flex_rating"
-          }
-        },
-        "profile": {
-          "type": "spec",
-          "settings": {
-            "label": "Profile",
-            "field_key": "profile"
-          }
-        },
-        "core_material": {
-          "type": "spec",
-          "settings": {
-            "label": "Core Material",
-            "field_key": "core_material"
-          }
-        },
-        "base": {
-          "type": "spec",
-          "settings": {
-            "label": "Base",
-            "field_key": "base"
-          }
-        },
-        "skill_level": {
-          "type": "spec",
-          "settings": {
-            "label": "Skill Level",
-            "field_key": "skill_level"
-          }
-        },
-        "terrain": {
-          "type": "spec",
-          "settings": {
-            "label": "Terrain",
-            "field_key": "terrain"
-          }
-        }
-      },
-      "block_order": [
-        "board_type",
-        "length",
-        "flex_rating",
-        "profile",
-        "core_material",
-        "base",
-        "skill_level",
-        "terrain"
-      ],
       "settings": {
         "eyebrow": "What's inside",
         "title": "The Complete Snowboard",
         "title_highlight": "Specs",
         "description": "Complete snowboard variants. Pre-tuned, waxed, and ready to ride.",
-        "metafield_namespace": "custom",
-        "metafield_key": "specifications",
         "accent_color": "#8B2942",
         "background_color": "#F4F4F2",
         "card_background_color": "#FFFFFF",

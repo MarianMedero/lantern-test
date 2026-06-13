@@ -1,28 +1,27 @@
 {{ 'section-product-specifications.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign metaobject = product.metafields[section.settings.metafield_namespace][section.settings.metafield_key].value
-  assign has_visible_blocks = false
+  assign spec_fields = 'board_type|Board Type,length|Length,flex_rating|Flex Rating,profile|Profile,core_material|Core Material,base|Base,skill_level|Skill Level,terrain|Terrain' | split: ','
+  assign has_visible_specs = false
 
-  for block in section.blocks
-    assign field_key = block.settings.field_key
-    assign field_values = blank
+  for spec_field in spec_fields
+    assign spec_parts = spec_field | split: '|'
+    assign field_key = spec_parts[0]
+    assign spec_metafield = product.metafields.custom[field_key]
+    assign metaobject_list = blank
 
-    if metaobject != blank and field_key != blank
-      assign field_metafield = metaobject[field_key]
-      if field_metafield != blank
-        assign field_values = field_metafield.value
-      endif
+    if spec_metafield != blank
+      assign metaobject_list = spec_metafield.value
     endif
 
-    if field_values != blank or request.design_mode
-      assign has_visible_blocks = true
+    if metaobject_list != blank or request.design_mode
+      assign has_visible_specs = true
       break
     endif
   endfor
 -%}
 
-{%- if has_visible_blocks -%}
+{%- if has_visible_specs -%}
   {%- style -%}
     #ProductSpecifications-{{ section.id }} {
       --color-foreground: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
@@ -76,39 +75,37 @@
       </div>
 
       <ul class="product-specifications__grid" role="list">
-        {%- for block in section.blocks -%}
+        {%- for spec_field in spec_fields -%}
           {%- liquid
-            assign field_key = block.settings.field_key
-            assign field_values = blank
+            assign spec_parts = spec_field | split: '|'
+            assign field_key = spec_parts[0]
+            assign field_label = spec_parts[1]
+            assign spec_metafield = product.metafields.custom[field_key]
+            assign metaobject_list = blank
             assign spec_value = blank
 
-            if metaobject != blank and field_key != blank
-              assign field_metafield = metaobject[field_key]
-              if field_metafield != blank
-                assign field_values = field_metafield.value
-              endif
+            if spec_metafield != blank
+              assign metaobject_list = spec_metafield.value
             endif
 
-            if field_values != blank
+            if metaobject_list != blank
               capture spec_value
-                for item in field_values
-                  unless forloop.first
-                    echo ', '
-                  endunless
-                  echo item
+                for entry in metaobject_list
+                  assign entry_value = entry[field_key].value
+                  if entry_value != blank
+                    unless forloop.first
+                      echo ', '
+                    endunless
+                    echo entry_value
+                  endif
                 endfor
               endcapture
             endif
           -%}
 
           {%- if spec_value != blank or request.design_mode -%}
-            <li
-              class="product-specifications__card"
-              {{ block.shopify_attributes }}
-            >
-              {%- if block.settings.label != blank -%}
-                <h3 class="product-specifications__card-label">{{ block.settings.label | escape }}</h3>
-              {%- endif -%}
+            <li class="product-specifications__card">
+              <h3 class="product-specifications__card-label">{{ field_label | escape }}</h3>
               <p class="product-specifications__card-value">
                 {%- if spec_value != blank -%}
                   {{- spec_value | escape -}}
@@ -163,24 +160,6 @@
     },
     {
       "type": "header",
-      "content": "t:sections.product-specifications.settings.header_metafield.content"
-    },
-    {
-      "type": "text",
-      "id": "metafield_namespace",
-      "label": "t:sections.product-specifications.settings.metafield_namespace.label",
-      "default": "custom",
-      "info": "t:sections.product-specifications.settings.metafield_namespace.info"
-    },
-    {
-      "type": "text",
-      "id": "metafield_key",
-      "label": "t:sections.product-specifications.settings.metafield_key.label",
-      "default": "specifications",
-      "info": "t:sections.product-specifications.settings.metafield_key.info"
-    },
-    {
-      "type": "header",
       "content": "t:sections.product-specifications.settings.header_colors.content"
     },
     {
@@ -226,87 +205,9 @@
       "default": 64
     }
   ],
-  "blocks": [
-    {
-      "type": "spec",
-      "name": "t:sections.product-specifications.blocks.spec.name",
-      "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "t:sections.product-specifications.blocks.spec.settings.label.label",
-          "default": "Spec label"
-        },
-        {
-          "type": "text",
-          "id": "field_key",
-          "label": "t:sections.product-specifications.blocks.spec.settings.field_key.label",
-          "info": "t:sections.product-specifications.blocks.spec.settings.field_key.info"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
-      "name": "t:sections.product-specifications.presets.name",
-      "blocks": [
-        {
-          "type": "spec",
-          "settings": {
-            "label": "Board Type",
-            "field_key": "board_type"
-          }
-        },
-        {
-          "type": "spec",
-          "settings": {
-            "label": "Length",
-            "field_key": "length"
-          }
-        },
-        {
-          "type": "spec",
-          "settings": {
-            "label": "Flex Rating",
-            "field_key": "flex_rating"
-          }
-        },
-        {
-          "type": "spec",
-          "settings": {
-            "label": "Profile",
-            "field_key": "profile"
-          }
-        },
-        {
-          "type": "spec",
-          "settings": {
-            "label": "Core Material",
-            "field_key": "core_material"
-          }
-        },
-        {
-          "type": "spec",
-          "settings": {
-            "label": "Base",
-            "field_key": "base"
-          }
-        },
-        {
-          "type": "spec",
-          "settings": {
-            "label": "Skill Level",
-            "field_key": "skill_level"
-          }
-        },
-        {
-          "type": "spec",
-          "settings": {
-            "label": "Terrain",
-            "field_key": "terrain"
-          }
-        }
-      ]
+      "name": "t:sections.product-specifications.presets.name"
     }
   ]
 }

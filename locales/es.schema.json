@@ -3310,17 +3310,6 @@
         "description": {
           "label": "Descripción"
         },
-        "header_metafield": {
-          "content": "Metafield del metaobject"
-        },
-        "metafield_namespace": {
-          "label": "Namespace",
-          "info": "Namespace del metafield del producto que referencia el metaobject de especificaciones."
-        },
-        "metafield_key": {
-          "label": "Key",
-          "info": "Key del metafield del producto que referencia el metaobject de especificaciones."
-        },
         "header_colors": {
           "content": "Colores"
         },
@@ -3332,20 +3321,6 @@
         },
         "card_background_color": {
           "label": "Color de fondo de tarjeta"
-        }
-      },
-      "blocks": {
-        "spec": {
-          "name": "Especificación",
-          "settings": {
-            "label": {
-              "label": "Etiqueta"
-            },
-            "field_key": {
-              "label": "Key del campo del metaobject",
-              "info": "Key del campo list.single_line_text_field en el metaobject. Debe coincidir con el nombre del campo en la definición del metaobject."
-            }
-          }
         }
       },
       "presets": {
