@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -76,64 +85,48 @@
     "product-specifications": {
       "type": "product-specifications",
       "blocks": {
-        "board_type": {
+        "spec_NMUWq6": {
           "type": "spec",
           "settings": {
-            "metafield_key": "board_type"
+            "metafield_key": "board_type",
+            "label": ""
           }
         },
-        "length": {
+        "spec_FzNELc": {
           "type": "spec",
           "settings": {
-            "metafield_key": "length"
+            "metafield_key": "length",
+            "label": ""
           }
         },
-        "flex_rating": {
+        "spec_qyDqm6": {
           "type": "spec",
           "settings": {
-            "metafield_key": "flex_rating"
+            "metafield_key": "flex_rating",
+            "label": ""
           }
         },
-        "profile": {
+        "spec_tU3ijN": {
           "type": "spec",
           "settings": {
-            "metafield_key": "profile"
+            "metafield_key": "profile",
+            "label": ""
           }
         },
-        "core_material": {
+        "spec_iAtFUf": {
           "type": "spec",
           "settings": {
-            "metafield_key": "core_material"
-          }
-        },
-        "base": {
-          "type": "spec",
-          "settings": {
-            "metafield_key": "base"
-          }
-        },
-        "skill_level": {
-          "type": "spec",
-          "settings": {
-            "metafield_key": "skill_level"
-          }
-        },
-        "terrain": {
-          "type": "spec",
-          "settings": {
-            "metafield_key": "terrain"
+            "metafield_key": "terrain",
+            "label": ""
           }
         }
       },
       "block_order": [
-        "board_type",
-        "length",
-        "flex_rating",
-        "profile",
-        "core_material",
-        "base",
-        "skill_level",
-        "terrain"
+        "spec_NMUWq6",
+        "spec_FzNELc",
+        "spec_qyDqm6",
+        "spec_tU3ijN",
+        "spec_iAtFUf"
       ],
       "settings": {
         "eyebrow": "What's inside",
@@ -141,9 +134,9 @@
         "title_highlight": "Specs",
         "description": "Complete snowboard variants. Pre-tuned, waxed, and ready to ride.",
         "enable_debug_logs": true,
-        "accent_color": "#8B2942",
-        "background_color": "#F4F4F2",
-        "card_background_color": "#FFFFFF",
+        "accent_color": "#8b2942",
+        "background_color": "#f4f4f2",
+        "card_background_color": "#ffffff",
         "padding_top": 64,
         "padding_bottom": 64
       }
