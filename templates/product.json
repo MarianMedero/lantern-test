@@ -26,7 +26,8 @@
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
-            "picker_type": "button"
+            "picker_type": "button",
+            "swatch_icon_display": "text_icon"
           }
         },
         "quantity_selector": {
