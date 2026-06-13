@@ -13,9 +13,10 @@
   assign spec_metafield = variant.metafields.custom[field_key]
 
   if spec_metafield != blank and spec_metafield.value != blank
-    assign output_started = false
-
-    if spec_metafield.type contains 'list.'
+    if spec_metafield.type contains 'number'
+      echo spec_metafield.value
+    elsif spec_metafield.type contains 'list.'
+      assign output_started = false
       for entry in spec_metafield.value
         assign entry_field = entry[field_key]
         if entry_field != blank
@@ -30,12 +31,14 @@
           endif
         endif
       endfor
-    else
+    elsif spec_metafield.type contains 'metaobject'
       assign entry = spec_metafield.value
       assign entry_field = entry[field_key]
       if entry_field != blank
         echo entry_field.value
       endif
+    else
+      echo spec_metafield.value
     endif
   endif
 -%}

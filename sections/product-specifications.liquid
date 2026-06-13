@@ -186,19 +186,22 @@
             }{%- unless forloop.last -%},{%- endunless -%}
           {%- endfor -%}
         ],
-        "variants": {
+        "variants": [
           {%- for variant in product.variants -%}
-            {{ variant.id | json }}: {
-              {%- for block in section.blocks -%}
-                {%- assign field_key = block.settings.metafield_key -%}
-                {%- capture variant_spec_value -%}
-                  {%- render 'product-spec-metafield-value', variant: variant, field_key: field_key -%}
-                {%- endcapture -%}
-                {{ field_key | json }}: {{ variant_spec_value | strip | json }}{%- unless forloop.last -%},{%- endunless -%}
-              {%- endfor -%}
+            {
+              "id": {{ variant.id | json }},
+              "specs": {
+                {%- for block in section.blocks -%}
+                  {%- assign field_key = block.settings.metafield_key -%}
+                  {%- capture variant_spec_value -%}
+                    {%- render 'product-spec-metafield-value', variant: variant, field_key: field_key -%}
+                  {%- endcapture -%}
+                  {{ field_key | json }}: {{ variant_spec_value | strip | json }}{%- unless forloop.last -%},{%- endunless -%}
+                {%- endfor -%}
+              }
             }{%- unless forloop.last -%},{%- endunless -%}
           {%- endfor -%}
-        },
+        ],
         "logs": [
           {%- assign log_index = 0 -%}
           {%- for variant in product.variants -%}
@@ -224,6 +227,8 @@
                 if metaobject_list != blank
                   if spec_metafield.type contains 'list.'
                     assign entry_count = metaobject_list.size
+                  elsif spec_metafield.type contains 'number'
+                    assign entry_count = 1
                   else
                     assign entry_count = 1
                   endif
@@ -239,7 +244,7 @@
                 "variantTitle": {{ variant.title | json }},
                 "metafield": {{ field_key | prepend: 'custom.' | json }},
                 "metafieldPresent": {{ metafield_present | json }},
-                "metafieldType": {{ metafield_type | json }},
+                "metafieldType": {{ metafield_type | default: '' | json }},
                 "rawValueBlank": {{ raw_value_blank | json }},
                 "entryCount": {{ entry_count | json }},
                 "resolvedValue": {{ resolved_value | strip | json }}
