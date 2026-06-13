@@ -86,31 +86,52 @@
     "product-specifications": {
       "type": "product-specifications",
       "blocks": {
-        "spec_NMUWq6": {
+        "spec_N9mL7P": {
           "type": "spec",
           "settings": {
             "metafield_key": "board_type",
             "label": ""
           }
         },
-        "spec_FzNELc": {
+        "spec_wgFEcg": {
           "type": "spec",
           "settings": {
             "metafield_key": "length",
             "label": ""
           }
         },
-        "spec_qyDqm6": {
+        "spec_Tp6YtB": {
           "type": "spec",
           "settings": {
             "metafield_key": "flex_rating",
             "label": ""
           }
         },
-        "spec_tU3ijN": {
+        "spec_NMUWq6": {
           "type": "spec",
           "settings": {
             "metafield_key": "profile",
+            "label": ""
+          }
+        },
+        "spec_FzNELc": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "core_material",
+            "label": ""
+          }
+        },
+        "spec_qyDqm6": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "base",
+            "label": ""
+          }
+        },
+        "spec_tU3ijN": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "skill_level",
             "label": ""
           }
         },
@@ -123,6 +144,9 @@
         }
       },
       "block_order": [
+        "spec_N9mL7P",
+        "spec_wgFEcg",
+        "spec_Tp6YtB",
         "spec_NMUWq6",
         "spec_FzNELc",
         "spec_qyDqm6",
