@@ -75,11 +75,72 @@
     },
     "product-specifications": {
       "type": "product-specifications",
+      "blocks": {
+        "board_type": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "board_type"
+          }
+        },
+        "length": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "length"
+          }
+        },
+        "flex_rating": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "flex_rating"
+          }
+        },
+        "profile": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "profile"
+          }
+        },
+        "core_material": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "core_material"
+          }
+        },
+        "base": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "base"
+          }
+        },
+        "skill_level": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "skill_level"
+          }
+        },
+        "terrain": {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "terrain"
+          }
+        }
+      },
+      "block_order": [
+        "board_type",
+        "length",
+        "flex_rating",
+        "profile",
+        "core_material",
+        "base",
+        "skill_level",
+        "terrain"
+      ],
       "settings": {
         "eyebrow": "What's inside",
         "title": "The Complete Snowboard",
         "title_highlight": "Specs",
         "description": "Complete snowboard variants. Pre-tuned, waxed, and ready to ride.",
+        "enable_debug_logs": true,
         "accent_color": "#8B2942",
         "background_color": "#F4F4F2",
         "card_background_color": "#FFFFFF",

@@ -3310,6 +3310,13 @@
         "description": {
           "label": "Description"
         },
+        "header_debug": {
+          "content": "Debug"
+        },
+        "enable_debug_logs": {
+          "label": "Enable console debug logs",
+          "info": "Logs variant metafield resolution details to the browser console."
+        },
         "header_colors": {
           "content": "Colors"
         },
@@ -3321,6 +3328,31 @@
         },
         "card_background_color": {
           "label": "Card background color"
+        }
+      },
+      "blocks": {
+        "spec": {
+          "name": "Specification",
+          "settings": {
+            "metafield_key": {
+              "label": "Metafield",
+              "info": "Variant metafield under the custom namespace (e.g. custom.board_type).",
+              "options": {
+                "board_type": "Board Type",
+                "length": "Length",
+                "flex_rating": "Flex Rating",
+                "profile": "Profile",
+                "core_material": "Core Material",
+                "base": "Base",
+                "skill_level": "Skill Level",
+                "terrain": "Terrain"
+              }
+            },
+            "label": {
+              "label": "Label",
+              "info": "Optional. Leave blank to use the default label."
+            }
+          }
         }
       },
       "presets": {

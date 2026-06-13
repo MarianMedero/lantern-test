@@ -1,27 +1,36 @@
 {{ 'section-product-specifications.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-specifications.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
-  assign spec_fields = 'board_type|Board Type,length|Length,flex_rating|Flex Rating,profile|Profile,core_material|Core Material,base|Base,skill_level|Skill Level,terrain|Terrain' | split: ','
-  assign has_visible_specs = false
+  assign selected_variant = product.selected_or_first_available_variant
+  assign has_visible_blocks = false
 
-  for spec_field in spec_fields
-    assign spec_parts = spec_field | split: '|'
-    assign field_key = spec_parts[0]
-    assign spec_metafield = product.metafields.custom[field_key]
-    assign metaobject_list = blank
+  if section.blocks.size > 0
+    if request.design_mode
+      assign has_visible_blocks = true
+    else
+      for variant in product.variants
+        for block in section.blocks
+          assign field_key = block.settings.metafield_key
+          capture spec_value
+            render 'product-spec-metafield-value', variant: variant, field_key: field_key
+          endcapture
 
-    if spec_metafield != blank
-      assign metaobject_list = spec_metafield.value
+          if spec_value != blank
+            assign has_visible_blocks = true
+            break
+          endif
+        endfor
+
+        if has_visible_blocks
+          break
+        endif
+      endfor
     endif
-
-    if metaobject_list != blank or request.design_mode
-      assign has_visible_specs = true
-      break
-    endif
-  endfor
+  endif
 -%}
 
-{%- if has_visible_specs -%}
+{%- if has_visible_blocks -%}
   {%- style -%}
     #ProductSpecifications-{{ section.id }} {
       --color-foreground: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
@@ -43,9 +52,10 @@
     }
   {%- endstyle -%}
 
-  <section
+  <product-specifications
     id="ProductSpecifications-{{ section.id }}"
     class="product-specifications section-{{ section.id }}-padding"
+    data-section-id="{{ section.id }}"
   >
     <div class="page-width">
       <div class="product-specifications__header">
@@ -75,50 +85,172 @@
       </div>
 
       <ul class="product-specifications__grid" role="list">
-        {%- for spec_field in spec_fields -%}
+        {%- for block in section.blocks -%}
           {%- liquid
-            assign spec_parts = spec_field | split: '|'
-            assign field_key = spec_parts[0]
-            assign field_label = spec_parts[1]
-            assign spec_metafield = product.metafields.custom[field_key]
-            assign metaobject_list = blank
-            assign spec_value = blank
+            assign field_key = block.settings.metafield_key
+            assign field_label = block.settings.label
 
-            if spec_metafield != blank
-              assign metaobject_list = spec_metafield.value
+            case field_key
+              when 'board_type'
+                assign default_label = 'Board Type'
+              when 'length'
+                assign default_label = 'Length'
+              when 'flex_rating'
+                assign default_label = 'Flex Rating'
+              when 'profile'
+                assign default_label = 'Profile'
+              when 'core_material'
+                assign default_label = 'Core Material'
+              when 'base'
+                assign default_label = 'Base'
+              when 'skill_level'
+                assign default_label = 'Skill Level'
+              when 'terrain'
+                assign default_label = 'Terrain'
+              else
+                assign default_label = field_key
+            endcase
+
+            if field_label == blank
+              assign field_label = default_label
             endif
 
-            if metaobject_list != blank
-              capture spec_value
-                for entry in metaobject_list
-                  assign entry_value = entry[field_key].value
-                  if entry_value != blank
-                    unless forloop.first
-                      echo ', '
-                    endunless
-                    echo entry_value
-                  endif
-                endfor
-              endcapture
-            endif
+            capture spec_value
+              render 'product-spec-metafield-value', variant: selected_variant, field_key: field_key
+            endcapture
           -%}
 
-          {%- if spec_value != blank or request.design_mode -%}
-            <li class="product-specifications__card">
-              <h3 class="product-specifications__card-label">{{ field_label | escape }}</h3>
-              <p class="product-specifications__card-value">
-                {%- if spec_value != blank -%}
-                  {{- spec_value | escape -}}
-                {%- elsif request.design_mode -%}
-                  —
-                {%- endif -%}
-              </p>
-            </li>
+          {%- if spec_value == blank and request.design_mode == false -%}
+            {%- assign card_hidden = true -%}
+          {%- else -%}
+            {%- assign card_hidden = false -%}
           {%- endif -%}
+
+          <li
+            class="product-specifications__card"
+            data-spec-card="{{ field_key }}"
+            {% if card_hidden %}hidden{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <h3 class="product-specifications__card-label">{{ field_label | escape }}</h3>
+            <p class="product-specifications__card-value" data-spec-value="{{ field_key }}">
+              {%- if spec_value != blank -%}
+                {{- spec_value | escape -}}
+              {%- elsif request.design_mode -%}
+                —
+              {%- endif -%}
+            </p>
+          </li>
         {%- endfor -%}
       </ul>
     </div>
-  </section>
+
+    <script type="application/json" id="ProductSpecsData-{{ section.id }}">
+      {
+        "debug": {{ section.settings.enable_debug_logs | json }},
+        "designMode": {{ request.design_mode | json }},
+        "initialVariantId": {{ selected_variant.id | json }},
+        "blocks": [
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign json_field_key = block.settings.metafield_key
+              case json_field_key
+                when 'board_type'
+                  assign json_default_label = 'Board Type'
+                when 'length'
+                  assign json_default_label = 'Length'
+                when 'flex_rating'
+                  assign json_default_label = 'Flex Rating'
+                when 'profile'
+                  assign json_default_label = 'Profile'
+                when 'core_material'
+                  assign json_default_label = 'Core Material'
+                when 'base'
+                  assign json_default_label = 'Base'
+                when 'skill_level'
+                  assign json_default_label = 'Skill Level'
+                when 'terrain'
+                  assign json_default_label = 'Terrain'
+                else
+                  assign json_default_label = json_field_key
+              endcase
+              assign json_block_label = block.settings.label
+              if json_block_label == blank
+                assign json_block_label = json_default_label
+              endif
+            -%}
+            {
+              "id": {{ block.id | json }},
+              "metafieldKey": {{ json_field_key | json }},
+              "label": {{ json_block_label | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ],
+        "variants": {
+          {%- for variant in product.variants -%}
+            {{ variant.id | json }}: {
+              {%- for block in section.blocks -%}
+                {%- assign field_key = block.settings.metafield_key -%}
+                {%- capture variant_spec_value -%}
+                  {%- render 'product-spec-metafield-value', variant: variant, field_key: field_key -%}
+                {%- endcapture -%}
+                {{ field_key | json }}: {{ variant_spec_value | strip | json }}{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        },
+        "logs": [
+          {%- assign log_index = 0 -%}
+          {%- for variant in product.variants -%}
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign field_key = block.settings.metafield_key
+                assign spec_metafield = variant.metafields.custom[field_key]
+                assign metaobject_list = blank
+                assign entry_count = 0
+                assign metafield_present = false
+                assign raw_value_blank = true
+                assign metafield_type = blank
+
+                if spec_metafield != blank
+                  assign metafield_present = true
+                  assign metafield_type = spec_metafield.type
+                  if spec_metafield.value != blank
+                    assign raw_value_blank = false
+                    assign metaobject_list = spec_metafield.value
+                  endif
+                endif
+
+                if metaobject_list != blank
+                  if spec_metafield.type contains 'list.'
+                    assign entry_count = metaobject_list.size
+                  else
+                    assign entry_count = 1
+                  endif
+                endif
+
+                capture resolved_value
+                  render 'product-spec-metafield-value', variant: variant, field_key: field_key
+                endcapture
+              -%}
+              {%- if log_index > 0 -%},{%- endif -%}
+              {
+                "variantId": {{ variant.id | json }},
+                "variantTitle": {{ variant.title | json }},
+                "metafield": {{ field_key | prepend: 'custom.' | json }},
+                "metafieldPresent": {{ metafield_present | json }},
+                "metafieldType": {{ metafield_type | json }},
+                "rawValueBlank": {{ raw_value_blank | json }},
+                "entryCount": {{ entry_count | json }},
+                "resolvedValue": {{ resolved_value | strip | json }}
+              }
+              {%- assign log_index = log_index | plus: 1 -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+  </product-specifications>
 {%- endif -%}
 
 {% schema %}
@@ -157,6 +289,17 @@
       "id": "description",
       "label": "t:sections.product-specifications.settings.description.label",
       "default": "Complete snowboard variants. Pre-tuned, waxed, and ready to ride."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.product-specifications.settings.header_debug.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_debug_logs",
+      "label": "t:sections.product-specifications.settings.enable_debug_logs.label",
+      "info": "t:sections.product-specifications.settings.enable_debug_logs.info",
+      "default": true
     },
     {
       "type": "header",
@@ -205,9 +348,115 @@
       "default": 64
     }
   ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "t:sections.product-specifications.blocks.spec.name",
+      "settings": [
+        {
+          "type": "select",
+          "id": "metafield_key",
+          "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.label",
+          "info": "t:sections.product-specifications.blocks.spec.settings.metafield_key.info",
+          "default": "board_type",
+          "options": [
+            {
+              "value": "board_type",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.board_type"
+            },
+            {
+              "value": "length",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.length"
+            },
+            {
+              "value": "flex_rating",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.flex_rating"
+            },
+            {
+              "value": "profile",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.profile"
+            },
+            {
+              "value": "core_material",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.core_material"
+            },
+            {
+              "value": "base",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.base"
+            },
+            {
+              "value": "skill_level",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.skill_level"
+            },
+            {
+              "value": "terrain",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.terrain"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:sections.product-specifications.blocks.spec.settings.label.label",
+          "info": "t:sections.product-specifications.blocks.spec.settings.label.info"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
   "presets": [
     {
-      "name": "t:sections.product-specifications.presets.name"
+      "name": "t:sections.product-specifications.presets.name",
+      "blocks": [
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "board_type"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "length"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "flex_rating"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "profile"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "core_material"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "base"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "skill_level"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "terrain"
+          }
+        }
+      ]
     }
   ]
 }

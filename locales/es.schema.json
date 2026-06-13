@@ -3310,6 +3310,13 @@
         "description": {
           "label": "Descripción"
         },
+        "header_debug": {
+          "content": "Depuración"
+        },
+        "enable_debug_logs": {
+          "label": "Activar logs de depuración en consola",
+          "info": "Registra en la consola del navegador los detalles de resolución de metafields por variante."
+        },
         "header_colors": {
           "content": "Colores"
         },
@@ -3321,6 +3328,31 @@
         },
         "card_background_color": {
           "label": "Color de fondo de tarjeta"
+        }
+      },
+      "blocks": {
+        "spec": {
+          "name": "Especificación",
+          "settings": {
+            "metafield_key": {
+              "label": "Metafield",
+              "info": "Metafield de variante bajo el namespace custom (ej. custom.board_type).",
+              "options": {
+                "board_type": "Board Type",
+                "length": "Length",
+                "flex_rating": "Flex Rating",
+                "profile": "Profile",
+                "core_material": "Core Material",
+                "base": "Base",
+                "skill_level": "Skill Level",
+                "terrain": "Terrain"
+              }
+            },
+            "label": {
+              "label": "Etiqueta",
+              "info": "Opcional. Déjalo vacío para usar la etiqueta predeterminada."
+            }
+          }
         }
       },
       "presets": {
