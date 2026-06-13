@@ -1,11 +1,23 @@
 {%- liquid
   assign selected_variant = product.selected_or_first_available_variant
   assign show_section = false
+  assign selected_variant_has_specs = false
+  assign any_variant_has_specs = false
 
   if section.blocks.size > 0
-    if request.design_mode
-      assign show_section = true
-    else
+    for block in section.blocks
+      assign field_key = block.settings.metafield_key
+      capture selected_spec_value
+        render 'product-spec-metafield-value', variant: selected_variant, field_key: field_key
+      endcapture
+
+      if selected_spec_value != blank
+        assign selected_variant_has_specs = true
+        break
+      endif
+    endfor
+
+    unless request.design_mode
       for variant in product.variants
         for block in section.blocks
           assign field_key = block.settings.metafield_key
@@ -14,15 +26,21 @@
           endcapture
 
           if spec_value != blank
-            assign show_section = true
+            assign any_variant_has_specs = true
             break
           endif
         endfor
 
-        if show_section
+        if any_variant_has_specs
           break
         endif
       endfor
+    endunless
+
+    if request.design_mode
+      assign show_section = true
+    elsif any_variant_has_specs
+      assign show_section = true
     endif
   endif
 -%}
@@ -55,6 +73,7 @@
     id="ProductSpecifications-{{ section.id }}"
     class="product-specifications section-{{ section.id }}-padding"
     data-section-id="{{ section.id }}"
+    {% unless selected_variant_has_specs or request.design_mode %}hidden{% endunless %}
   >
     <div class="page-width">
       <div class="product-specifications__header">

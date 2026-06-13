@@ -53,6 +53,7 @@ if (!customElements.get('product-specifications')) {
 
       renderVariant(variantId) {
         const specs = this.variantMap[variantId] || {};
+        const hasSpecs = this.hasSpecs(specs);
 
         this.valueElements.forEach((element) => {
           const key = element.dataset.specValue;
@@ -67,6 +68,16 @@ if (!customElements.get('product-specifications')) {
           const hasValue = value !== undefined && value !== null && value !== '';
           card.hidden = !hasValue && !this.data.designMode;
         });
+
+        if (!this.data.designMode) {
+          this.hidden = !hasSpecs;
+        }
+      }
+
+      hasSpecs(specs) {
+        return Object.values(specs).some(
+          (value) => value !== undefined && value !== null && value !== ''
+        );
       }
 
       log(label, payload) {
