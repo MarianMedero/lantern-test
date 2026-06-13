@@ -3291,6 +3291,66 @@
       "presets": {
         "name": "Collapsible content"
       }
+    },
+    "product-specifications": {
+      "name": "Product specifications",
+      "settings": {
+        "header_content": {
+          "content": "Content"
+        },
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "title": {
+          "label": "Title"
+        },
+        "title_highlight": {
+          "label": "Title highlight"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "header_metafield": {
+          "content": "Metaobject metafield"
+        },
+        "metafield_namespace": {
+          "label": "Namespace",
+          "info": "Product metafield namespace that references the specifications metaobject."
+        },
+        "metafield_key": {
+          "label": "Key",
+          "info": "Product metafield key that references the specifications metaobject."
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "accent_color": {
+          "label": "Accent color"
+        },
+        "background_color": {
+          "label": "Background color"
+        },
+        "card_background_color": {
+          "label": "Card background color"
+        }
+      },
+      "blocks": {
+        "spec": {
+          "name": "Specification",
+          "settings": {
+            "label": {
+              "label": "Label"
+            },
+            "field_key": {
+              "label": "Metaobject field key",
+              "info": "Key of the list.single_line_text_field on the metaobject. Must match the field name in your metaobject definition."
+            }
+          }
+        }
+      },
+      "presets": {
+        "name": "Product specifications"
+      }
     }
   }
 }
