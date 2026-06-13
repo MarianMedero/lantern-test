@@ -43,6 +43,32 @@
           endif
       endcase
     endfor
+
+    assign swatch_icon = blank
+
+    for variant in product.variants
+      assign option_value_matches = false
+
+      case option.position
+        when 1
+          if variant.option1 == value
+            assign option_value_matches = true
+          endif
+        when 2
+          if variant.option2 == value
+            assign option_value_matches = true
+          endif
+        when 3
+          if variant.option3 == value
+            assign option_value_matches = true
+          endif
+      endcase
+
+      if option_value_matches and variant.metafields.custom.swatch_icon.value != blank
+        assign swatch_icon = variant.metafields.custom.swatch_icon.value
+        break
+      endif
+    endfor
   -%}
 
   {%- if block.settings.picker_type == 'button' -%}
@@ -59,8 +85,18 @@
         class="disabled"
       {% endif %}
     >
-    <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
-      {{ value -}}
+    <label
+      for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+      class="{% if swatch_icon %}variant-picker__label variant-picker__label--with-icon{% endif %}"
+    >
+      {%- if swatch_icon -%}
+        <span class="variant-picker__icon" aria-hidden="true">
+          {{ swatch_icon | image_url: width: 96 | image_tag: widths: '48, 96', sizes: '24px', loading: 'lazy', class: 'variant-picker__icon-image', alt: '' }}
+        </span>
+        <span class="variant-picker__label-text visually-hidden">{{ value }}</span>
+      {%- else -%}
+        <span class="variant-picker__label-text">{{ value }}</span>
+      {%- endif -%}
       <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
     </label>
   {%- elsif block.settings.picker_type == 'dropdown' -%}
