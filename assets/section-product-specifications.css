@@ -7,14 +7,12 @@
   --product-specs-bg: 244, 244, 242;
   --product-specs-card-bg: 255, 255, 255;
 
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   background-color: rgb(var(--product-specs-bg));
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-}
-
-.product-specifications .page-width {
-  padding-left: 2.4rem;
-  padding-right: 2.4rem;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 /* Header
@@ -117,11 +115,6 @@
    -------------------------------------------------------------------------- */
 
 @media screen and (min-width: 750px) {
-  .product-specifications .page-width {
-    padding-left: 5.6rem;
-    padding-right: 5.6rem;
-  }
-
   .product-specifications__title {
     font-size: calc(var(--font-heading-scale) * 4.8rem);
   }
@@ -133,12 +126,5 @@
 
   .product-specifications__card {
     padding: 2.8rem 3rem;
-  }
-}
-
-@media screen and (min-width: 990px) {
-  .product-specifications .page-width {
-    padding-left: 6.4rem;
-    padding-right: 6.4rem;
   }
 }
