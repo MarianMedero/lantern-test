@@ -48,30 +48,10 @@
 {%- if show_section -%}
 {{ 'section-product-specifications.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'product-specifications.js' | asset_url }}" defer="defer"></script>
-  {%- style -%}
-    #ProductSpecifications-{{ section.id }} {
-      --color-foreground: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
-      --product-specs-accent: {{ section.settings.accent_color.red }}, {{ section.settings.accent_color.green }}, {{ section.settings.accent_color.blue }};
-      --product-specs-bg: {{ section.settings.background_color.red }}, {{ section.settings.background_color.green }}, {{ section.settings.background_color.blue }};
-      --product-specs-card-bg: {{ section.settings.card_background_color.red }}, {{ section.settings.card_background_color.green }}, {{ section.settings.card_background_color.blue }};
-    }
-
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    }
-
-    @media screen and (min-width: 750px) {
-      .section-{{ section.id }}-padding {
-        padding-top: {{ section.settings.padding_top }}px;
-        padding-bottom: {{ section.settings.padding_bottom }}px;
-      }
-    }
-  {%- endstyle -%}
 
   <product-specifications
     id="ProductSpecifications-{{ section.id }}"
-    class="product-specifications section-{{ section.id }}-padding"
+    class="product-specifications"
     data-section-id="{{ section.id }}"
     {% unless selected_variant_has_specs or request.design_mode %}hidden{% endunless %}
   >
@@ -313,52 +293,6 @@
       "label": "t:sections.product-specifications.settings.enable_debug_logs.label",
       "info": "t:sections.product-specifications.settings.enable_debug_logs.info",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "t:sections.product-specifications.settings.header_colors.content"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "t:sections.product-specifications.settings.accent_color.label",
-      "default": "#8B2942"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:sections.product-specifications.settings.background_color.label",
-      "default": "#F4F4F2"
-    },
-    {
-      "type": "color",
-      "id": "card_background_color",
-      "label": "t:sections.product-specifications.settings.card_background_color.label",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 64
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 64
     }
   ],
   "blocks": [

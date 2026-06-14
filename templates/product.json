@@ -133,12 +133,7 @@
         "eyebrow": "What's inside",
         "title_highlight": "Specs",
         "description": "Complete snowboard variants. Pre-tuned, waxed, and ready to ride.",
-        "enable_debug_logs": true,
-        "accent_color": "#8b2942",
-        "background_color": "#f4f4f2",
-        "card_background_color": "#ffffff",
-        "padding_top": 64,
-        "padding_bottom": 64
+        "enable_debug_logs": true
       }
     },
     "related-products": {
