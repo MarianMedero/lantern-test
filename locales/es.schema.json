@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "settings_schema": {
     "colors": {
@@ -1605,6 +1614,16 @@
               "options__2": {
                 "label": "Miniaturas"
               }
+            },
+            "swatch_icon_display": {
+              "label": "Visualización de la variante",
+              "info": "Los iconos se cargan del metafield de variante custom.swatch_icon cuando está disponible.",
+              "options__1": {
+                "label": "Solo texto"
+              },
+              "options__2": {
+                "label": "Texto e icono"
+              }
             }
           }
         },
@@ -2456,6 +2475,16 @@
               "options__2": {
                 "label": "Botones"
               }
+            },
+            "swatch_icon_display": {
+              "label": "Visualización de la variante",
+              "info": "Los iconos se cargan del metafield de variante custom.swatch_icon cuando está disponible.",
+              "options__1": {
+                "label": "Solo texto"
+              },
+              "options__2": {
+                "label": "Texto e icono"
+              }
             }
           }
         },
@@ -3290,6 +3319,71 @@
       },
       "presets": {
         "name": "Varias filas"
+      }
+    },
+    "product-specifications": {
+      "name": "Especificaciones del producto",
+      "settings": {
+        "header_content": {
+          "content": "Contenido"
+        },
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "title_highlight": {
+          "label": "Palabra destacada del título",
+          "info": "Se muestra después del título del producto. Ejemplo: \"Specs\" se renderiza como \"Nombre del producto Specs\"."
+        },
+        "description": {
+          "label": "Descripción"
+        },
+        "header_debug": {
+          "content": "Depuración"
+        },
+        "enable_debug_logs": {
+          "label": "Activar logs de depuración en consola",
+          "info": "Registra en la consola del navegador los detalles de resolución de metafields por variante."
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "accent_color": {
+          "label": "Color de acento"
+        },
+        "background_color": {
+          "label": "Color de fondo"
+        },
+        "card_background_color": {
+          "label": "Color de fondo de tarjeta"
+        }
+      },
+      "blocks": {
+        "spec": {
+          "name": "Especificación",
+          "settings": {
+            "metafield_key": {
+              "label": "Metafield",
+              "info": "Metafield de variante bajo el namespace custom (ej. custom.board_type).",
+              "options": {
+                "board_type": "Board Type",
+                "length": "Length",
+                "flex_rating": "Flex Rating",
+                "profile": "Profile",
+                "core_material": "Core Material",
+                "base": "Base",
+                "skill_level": "Skill Level",
+                "terrain": "Terrain"
+              }
+            },
+            "label": {
+              "label": "Etiqueta",
+              "info": "Opcional. Déjalo vacío para usar la etiqueta predeterminada."
+            }
+          }
+        }
+      },
+      "presets": {
+        "name": "Especificaciones del producto"
       }
     }
   }

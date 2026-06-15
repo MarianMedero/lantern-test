@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "settings_schema": {
     "global": {
@@ -817,6 +826,16 @@
               },
               "options__2": {
                 "label": "Pills"
+              }
+            },
+            "swatch_icon_display": {
+              "label": "Variant pill display",
+              "info": "Icons are loaded from the variant metafield custom.swatch_icon when available.",
+              "options__1": {
+                "label": "Text only"
+              },
+              "options__2": {
+                "label": "Text and icon"
               }
             }
           }
@@ -1949,6 +1968,16 @@
               },
               "options__2": {
                 "label": "Pills"
+              }
+            },
+            "swatch_icon_display": {
+              "label": "Variant pill display",
+              "info": "Icons are loaded from the variant metafield custom.swatch_icon when available.",
+              "options__1": {
+                "label": "Text only"
+              },
+              "options__2": {
+                "label": "Text and icon"
               }
             }
           }
@@ -3290,6 +3319,71 @@
       },
       "presets": {
         "name": "Collapsible content"
+      }
+    },
+    "product-specifications": {
+      "name": "Product specifications",
+      "settings": {
+        "header_content": {
+          "content": "Content"
+        },
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "title_highlight": {
+          "label": "Title highlight",
+          "info": "Shown after the product title. Example: \"Specs\" renders as \"Product Name Specs\"."
+        },
+        "description": {
+          "label": "Description"
+        },
+        "header_debug": {
+          "content": "Debug"
+        },
+        "enable_debug_logs": {
+          "label": "Enable console debug logs",
+          "info": "Logs variant metafield resolution details to the browser console."
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "accent_color": {
+          "label": "Accent color"
+        },
+        "background_color": {
+          "label": "Background color"
+        },
+        "card_background_color": {
+          "label": "Card background color"
+        }
+      },
+      "blocks": {
+        "spec": {
+          "name": "Specification",
+          "settings": {
+            "metafield_key": {
+              "label": "Metafield",
+              "info": "Variant metafield under the custom namespace (e.g. custom.board_type).",
+              "options": {
+                "board_type": "Board Type",
+                "length": "Length",
+                "flex_rating": "Flex Rating",
+                "profile": "Profile",
+                "core_material": "Core Material",
+                "base": "Base",
+                "skill_level": "Skill Level",
+                "terrain": "Terrain"
+              }
+            },
+            "label": {
+              "label": "Label",
+              "info": "Optional. Leave blank to use the default label."
+            }
+          }
+        }
+      },
+      "presets": {
+        "name": "Product specifications"
       }
     }
   }

@@ -1,0 +1,44 @@
+{%- comment -%}
+  Renders the display value for a variant spec metafield.
+
+  Accepts:
+  - variant: {Object} Product variant
+  - field_key: {String} Metafield key under custom namespace
+
+  Usage:
+  {% capture spec_value %}{% render 'product-spec-metafield-value', variant: variant, field_key: field_key %}{% endcapture %}
+{%- endcomment -%}
+
+{%- liquid
+  assign spec_metafield = variant.metafields.custom[field_key]
+
+  if spec_metafield != blank and spec_metafield.value != blank
+    if spec_metafield.type contains 'number'
+      echo spec_metafield.value
+    elsif spec_metafield.type contains 'list.'
+      assign output_started = false
+      for entry in spec_metafield.value
+        assign entry_field = entry[field_key]
+        if entry_field != blank
+          assign entry_value = entry_field.value
+          if entry_value != blank
+            unless output_started
+              assign output_started = true
+            else
+              echo ', '
+            endunless
+            echo entry_value
+          endif
+        endif
+      endfor
+    elsif spec_metafield.type contains 'metaobject'
+      assign entry = spec_metafield.value
+      assign entry_field = entry[field_key]
+      if entry_field != blank
+        echo entry_field.value
+      endif
+    else
+      echo spec_metafield.value
+    endif
+  endif
+-%}

@@ -221,6 +221,40 @@ fieldset.product-form__input .form__label {
   box-shadow: var(--variant-pills-shadow-horizontal-offset) var(--variant-pills-shadow-vertical-offset) var(--variant-pills-shadow-blur-radius) rgba(var(--color-shadow), var(--variant-pills-shadow-opacity));
 }
 
+.product-form__input input[type='radio'] + label.variant-picker__label--text-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1rem 1.6rem;
+}
+
+.variant-picker__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.variant-picker__icon-image {
+  display: block;
+  width: 2.4rem;
+  height: 2.4rem;
+  object-fit: contain;
+}
+
+.product-form__input input[type='radio']:checked + label.variant-picker__label--text-icon .variant-picker__icon-image {
+  filter: brightness(0) invert(1);
+}
+
+.product-form__input input[type='radio']:disabled + label.variant-picker__label--text-icon .variant-picker__icon-image,
+.product-form__input input[type='radio'].disabled + label.variant-picker__label--text-icon .variant-picker__icon-image {
+  opacity: 0.45;
+}
+
 .product-form__input input[type='radio'] + label:hover {
   border-color: rgb(var(--color-foreground));
 }

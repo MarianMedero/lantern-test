@@ -1,0 +1,410 @@
+{%- liquid
+  assign selected_variant = product.selected_or_first_available_variant
+  assign show_section = false
+  assign selected_variant_has_specs = false
+  assign any_variant_has_specs = false
+
+  if section.blocks.size > 0
+    for block in section.blocks
+      assign field_key = block.settings.metafield_key
+      capture selected_spec_value
+        render 'product-spec-metafield-value', variant: selected_variant, field_key: field_key
+      endcapture
+
+      if selected_spec_value != blank
+        assign selected_variant_has_specs = true
+        break
+      endif
+    endfor
+
+    unless request.design_mode
+      for variant in product.variants
+        for block in section.blocks
+          assign field_key = block.settings.metafield_key
+          capture spec_value
+            render 'product-spec-metafield-value', variant: variant, field_key: field_key
+          endcapture
+
+          if spec_value != blank
+            assign any_variant_has_specs = true
+            break
+          endif
+        endfor
+
+        if any_variant_has_specs
+          break
+        endif
+      endfor
+    endunless
+
+    if request.design_mode
+      assign show_section = true
+    elsif any_variant_has_specs
+      assign show_section = true
+    endif
+  endif
+-%}
+
+{%- if show_section -%}
+{{ 'section-product-specifications.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-specifications.js' | asset_url }}" defer="defer"></script>
+
+  <product-specifications
+    id="ProductSpecifications-{{ section.id }}"
+    class="product-specifications"
+    data-section-id="{{ section.id }}"
+    {% unless selected_variant_has_specs or request.design_mode %}hidden{% endunless %}
+  >
+    <div class="page-width">
+      <div class="product-specifications__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="product-specifications__eyebrow">
+            <p class="product-specifications__eyebrow-text">{{ section.settings.eyebrow | escape }}</p>
+            <span class="product-specifications__eyebrow-line" aria-hidden="true"></span>
+          </div>
+        {%- endif -%}
+
+        <h2 class="product-specifications__title">
+          {{- product.title | escape -}}
+          {%- if section.settings.title_highlight != blank -%}
+            <span class="product-specifications__title-highlight">
+              {{- ' ' | append: section.settings.title_highlight | escape -}}
+            </span>
+          {%- endif -%}
+        </h2>
+
+        {%- if section.settings.description != blank -%}
+          <p class="product-specifications__description">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <ul class="product-specifications__grid" role="list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign field_key = block.settings.metafield_key
+            assign field_label = block.settings.label
+
+            case field_key
+              when 'board_type'
+                assign default_label = 'Board Type'
+              when 'length'
+                assign default_label = 'Length'
+              when 'flex_rating'
+                assign default_label = 'Flex Rating'
+              when 'profile'
+                assign default_label = 'Profile'
+              when 'core_material'
+                assign default_label = 'Core Material'
+              when 'base'
+                assign default_label = 'Base'
+              when 'skill_level'
+                assign default_label = 'Skill Level'
+              when 'terrain'
+                assign default_label = 'Terrain'
+              else
+                assign default_label = field_key
+            endcase
+
+            if field_label == blank
+              assign field_label = default_label
+            endif
+
+            capture spec_value
+              render 'product-spec-metafield-value', variant: selected_variant, field_key: field_key
+            endcapture
+          -%}
+
+          {%- if spec_value == blank and request.design_mode == false -%}
+            {%- assign card_hidden = true -%}
+          {%- else -%}
+            {%- assign card_hidden = false -%}
+          {%- endif -%}
+
+          <li
+            class="product-specifications__card"
+            data-spec-card="{{ field_key }}"
+            {% if card_hidden %}hidden{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <h3 class="product-specifications__card-label">{{ field_label | escape }}</h3>
+            <p class="product-specifications__card-value" data-spec-value="{{ field_key }}">
+              {%- if spec_value != blank -%}
+                {{- spec_value | escape -}}
+              {%- elsif request.design_mode -%}
+                —
+              {%- endif -%}
+            </p>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <script type="application/json" id="ProductSpecsData-{{ section.id }}">
+      {
+        "debug": {{ section.settings.enable_debug_logs | json }},
+        "designMode": {{ request.design_mode | json }},
+        "initialVariantId": {{ selected_variant.id | json }},
+        "blocks": [
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign json_field_key = block.settings.metafield_key
+              case json_field_key
+                when 'board_type'
+                  assign json_default_label = 'Board Type'
+                when 'length'
+                  assign json_default_label = 'Length'
+                when 'flex_rating'
+                  assign json_default_label = 'Flex Rating'
+                when 'profile'
+                  assign json_default_label = 'Profile'
+                when 'core_material'
+                  assign json_default_label = 'Core Material'
+                when 'base'
+                  assign json_default_label = 'Base'
+                when 'skill_level'
+                  assign json_default_label = 'Skill Level'
+                when 'terrain'
+                  assign json_default_label = 'Terrain'
+                else
+                  assign json_default_label = json_field_key
+              endcase
+              assign json_block_label = block.settings.label
+              if json_block_label == blank
+                assign json_block_label = json_default_label
+              endif
+            -%}
+            {
+              "id": {{ block.id | json }},
+              "metafieldKey": {{ json_field_key | json }},
+              "label": {{ json_block_label | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ],
+        "variants": [
+          {%- for variant in product.variants -%}
+            {
+              "id": {{ variant.id | json }},
+              "specs": {
+                {%- for block in section.blocks -%}
+                  {%- assign field_key = block.settings.metafield_key -%}
+                  {%- capture variant_spec_value -%}
+                    {%- render 'product-spec-metafield-value', variant: variant, field_key: field_key -%}
+                  {%- endcapture -%}
+                  {{ field_key | json }}: {{ variant_spec_value | strip | json }}{%- unless forloop.last -%},{%- endunless -%}
+                {%- endfor -%}
+              }
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ],
+        "logs": [
+          {%- assign log_index = 0 -%}
+          {%- for variant in product.variants -%}
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign field_key = block.settings.metafield_key
+                assign spec_metafield = variant.metafields.custom[field_key]
+                assign metaobject_list = blank
+                assign entry_count = 0
+                assign metafield_present = false
+                assign raw_value_blank = true
+                assign metafield_type = blank
+
+                if spec_metafield != blank
+                  assign metafield_present = true
+                  assign metafield_type = spec_metafield.type
+                  if spec_metafield.value != blank
+                    assign raw_value_blank = false
+                    assign metaobject_list = spec_metafield.value
+                  endif
+                endif
+
+                if metaobject_list != blank
+                  if spec_metafield.type contains 'list.'
+                    assign entry_count = metaobject_list.size
+                  elsif spec_metafield.type contains 'number'
+                    assign entry_count = 1
+                  else
+                    assign entry_count = 1
+                  endif
+                endif
+
+                capture resolved_value
+                  render 'product-spec-metafield-value', variant: variant, field_key: field_key
+                endcapture
+              -%}
+              {%- if log_index > 0 -%},{%- endif -%}
+              {
+                "variantId": {{ variant.id | json }},
+                "variantTitle": {{ variant.title | json }},
+                "metafield": {{ field_key | prepend: 'custom.' | json }},
+                "metafieldPresent": {{ metafield_present | json }},
+                "metafieldType": {{ metafield_type | default: '' | json }},
+                "rawValueBlank": {{ raw_value_blank | json }},
+                "entryCount": {{ entry_count | json }},
+                "resolvedValue": {{ resolved_value | strip | json }}
+              }
+              {%- assign log_index = log_index | plus: 1 -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+  </product-specifications>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.product-specifications.name",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.product-specifications.settings.header_content.content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:sections.product-specifications.settings.eyebrow.label",
+      "default": "What's inside"
+    },
+    {
+      "type": "text",
+      "id": "title_highlight",
+      "label": "t:sections.product-specifications.settings.title_highlight.label",
+      "default": "Specs"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "t:sections.product-specifications.settings.description.label",
+      "default": "Complete snowboard variants. Pre-tuned, waxed, and ready to ride."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.product-specifications.settings.header_debug.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_debug_logs",
+      "label": "t:sections.product-specifications.settings.enable_debug_logs.label",
+      "info": "t:sections.product-specifications.settings.enable_debug_logs.info",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "t:sections.product-specifications.blocks.spec.name",
+      "settings": [
+        {
+          "type": "select",
+          "id": "metafield_key",
+          "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.label",
+          "info": "t:sections.product-specifications.blocks.spec.settings.metafield_key.info",
+          "default": "board_type",
+          "options": [
+            {
+              "value": "board_type",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.board_type"
+            },
+            {
+              "value": "length",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.length"
+            },
+            {
+              "value": "flex_rating",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.flex_rating"
+            },
+            {
+              "value": "profile",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.profile"
+            },
+            {
+              "value": "core_material",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.core_material"
+            },
+            {
+              "value": "base",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.base"
+            },
+            {
+              "value": "skill_level",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.skill_level"
+            },
+            {
+              "value": "terrain",
+              "label": "t:sections.product-specifications.blocks.spec.settings.metafield_key.options.terrain"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:sections.product-specifications.blocks.spec.settings.label.label",
+          "info": "t:sections.product-specifications.blocks.spec.settings.label.info"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "t:sections.product-specifications.presets.name",
+      "blocks": [
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "board_type"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "length"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "flex_rating"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "profile"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "core_material"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "base"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "skill_level"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "metafield_key": "terrain"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
